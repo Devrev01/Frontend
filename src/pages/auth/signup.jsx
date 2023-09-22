@@ -1,0 +1,60 @@
+import React, { useState } from 'react';
+import logo from '../../assests/logo.png'
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+
+const Signup = () => {
+    const [seepass, setSeepass] = useState(false);
+    const [confirmpass, setConfirmpass] = useState(false);
+    const navigate = useNavigate(false);
+    return (
+        <div className='w-full flex'>
+            <div className="bg-[url('/src/assests/image.png')] bg-no-repeat bg-cover h-screen w-[40%]"></div>
+            <div className='w-[60%] flex flex-col p-3 px-7 gap-10'>
+                <div className='flex items-center justify-center gap-1'>
+                    <span className='text-[48px] font-[600] text-[#043133]'>Welcome to</span>
+                    <img src={logo} alt="logo" className='w-1/2' />
+                </div>
+                <div className='flex flex-col gap-5'>
+                    <div className='flex flex-col w-full px-24'>
+                        <span className='text-[16px] text-[#4D5959] font-[500] leading-[30px]'>Full Name</span>
+                        <div className='bg-[#EFF0F2] p-3 w-full flex items-center'>
+                            <input type="text" style={{ border: 'none', outline: 'none', backgroundColor: "#EFF0F2", width: "100%" }} placeholder='Your Name here.' />
+                        </div>
+                    </div>
+                    <div className='flex flex-col w-full px-24'>
+                        <span className='text-[16px] text-[#4D5959] font-[500] leading-[30px]'>Email</span>
+                        <div className='bg-[#EFF0F2] p-3 w-full flex items-center'>
+                            <input type="text" style={{ border: 'none', outline: 'none', backgroundColor: "#EFF0F2", width: "100%" }} placeholder='Enter your Email here.' />
+                        </div>
+                    </div>
+                    <div className='flex flex-col w-full px-24'>
+                        <span className='text-[16px] text-[#4D5959] font-[500] leading-[30px]'>Password</span>
+                        <div className='bg-[#EFF0F2] p-3 w-full flex items-center justify-between'>
+                            <input type={!seepass ? "password" : "text"} style={{ border: 'none', outline: 'none', backgroundColor: "#EFF0F2", width: "100%" }} placeholder='Enter your Password here.' />
+                            <div onClick={() => setSeepass(!seepass)} className='cursor-pointer'>{seepass ? <VisibilityIcon sx={{ color: "#4D5959" }} /> : <VisibilityOffIcon sx={{ color: "#4D5959" }} />}</div>
+                        </div>
+                    </div>
+                    <div className='flex flex-col w-full px-24'>
+                        <span className='text-[16px] text-[#4D5959] font-[500] leading-[30px]'>Confirm Password</span>
+                        <div className='bg-[#EFF0F2] p-3 w-full flex items-center justify-between'>
+                            <input type={!confirmpass ? "password" : "text"} style={{ border: 'none', outline: 'none', backgroundColor: "#EFF0F2", width: "100%" }} placeholder='Confirm your Password here.' />
+                            <div onClick={() => setConfirmpass(!confirmpass)} className='cursor-pointer'>{confirmpass ? <VisibilityIcon sx={{ color: "#4D5959" }} /> : <VisibilityOffIcon sx={{ color: "#4D5959" }} />}</div>
+                        </div>
+                    </div>
+                </div>
+                <div className='flex justify-center flex-col gap-3 items-center'>
+                    <Button variant='contained' color='success' disableRipple sx={{ padding: "12px 20px" }}>Create Account</Button>
+                    <div className='flex gap-1'>
+                        <span className='text-[18px] font-[500] text-[#4D5959] '>Already have an account?</span>
+                        <span className='text-[18px] text-[#007074] font-[500] cursor-pointer' onClick={()=>navigate("/signin")}>Log in</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export default Signup
