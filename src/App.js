@@ -6,6 +6,7 @@ import Signin from './pages/auth/Signin';
 import Home from './pages/Home';
 import Cart from './pages/Cart';
 import Checkmail from './pages/auth/Checkmail';
+import Book from './pages/Book';
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
       <Route path="/check" element={ <Checkmail />} />
       <Route path="/signin" element={ <Signin />} />
       <Route path="/home" element={ <Home />} />
+      <Route path="/bookdetails/:id" element={ <Book />} />
       <Route path="/cart/:id" element={ <Cart />} />
     </Routes>
   );
