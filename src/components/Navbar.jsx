@@ -17,7 +17,7 @@ const Navbar = () => {
         <input type="search" style={{ border: 'none', outline: 'none', width: '100%' }} placeholder='Search' />
       </div>
       <div className='flex gap-3 items-center'>
-        <div className='cursor-pointer'>
+        <div className='cursor-pointer' onClick={()=>navigate("/cart/123")}>
           <ShoppingCartIcon sx={{width:'30px',height:'30px'}}/>
         </div>
         <div className='border-2 border-[#007074] rounded-md p-2 flex gap-2 items-center '>
