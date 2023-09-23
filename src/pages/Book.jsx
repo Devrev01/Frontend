@@ -36,7 +36,6 @@ const Book = () => {
                         <span className='text-[20px] font-[600] text-[#043133] '>Description :</span>
                         <span className='text-[20px] font-[600] text-[#4D5959] w-[65%]'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Deleniti, labore!</span>
                     </div>
-
                 </div>
 
             </div>
