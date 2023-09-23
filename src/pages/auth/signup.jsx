@@ -36,7 +36,6 @@ const Signup = () => {
             }
         } catch (err) {
             if(err.response.data.status === "failed") {
-                console.log('failed')
                 setUseralert(true);
                 setTimeout(()=>{
                     setUseralert(false);

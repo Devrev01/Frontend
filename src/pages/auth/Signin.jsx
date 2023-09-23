@@ -4,16 +4,51 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import google from '../../assests/google.png'
 import linkedin from '../../assests/linkedin.png'
-import { Button } from '@mui/material';
+import { Alert, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Signin = () => {
     const [seepass, setSeepass] = useState(false);
-    const [mail,setMail] = useState('');
-    const [password,setPassword] = useState('');
+    const [mail, setMail] = useState('');
+    const [password, setPassword] = useState('');
+    const [invalidemail,setInvalidemail] = useState(false);
+    const [invalidcredentials,setInvalidcredentials] = useState(false);
     const navigate = useNavigate(false);
-  return (
-    <div className='w-full flex'>
+
+    const login = async () => {
+        try {
+            const { data } = await axios.post("http://localhost:5000/api/auth/login", { email: mail, password },{withCredentials:true})
+            console.log(data)
+            if(data.status === "success"){
+                navigate("/home");
+            }
+        }catch(err){
+            if(err.response.data.msg === "User not found"){
+                setInvalidemail(true);
+                setTimeout(()=>{
+                    setInvalidemail(false);
+                },5000)
+            }
+            if(err.response.data.msg === "Invalid credentials"){
+                setInvalidcredentials(true);
+                setTimeout(()=>{
+                    setInvalidcredentials(false);
+                },5000)
+            }
+        }
+    }
+
+    const googlelogin = async ()=>{
+        try{
+            const {data} = await axios.get("http://localhost:5000/api/auth/google");
+            console.log(data);
+        }catch(err){
+            console.log(err)
+        }
+    }
+    return (
+        <div className='w-full flex'>
             <div className="bg-[url('/src/assests/image.png')] bg-no-repeat bg-cover h-screen w-[40%]"></div>
             <div className='w-[60%] flex flex-col p-3 px-7 gap-10'>
                 <div className='flex items-center justify-center gap-1'>
@@ -24,36 +59,42 @@ const Signin = () => {
                     <div className='flex flex-col w-full px-24'>
                         <span className='text-[16px] text-[#4D5959] font-[500] leading-[30px]'>Email</span>
                         <div className='bg-[#EFF0F2] p-3 w-full flex items-center'>
-                            <input type="text" style={{ border: 'none', outline: 'none', backgroundColor: "#EFF0F2", width: "100%" }} placeholder='Enter your Email here.' onChange={(event)=>setMail(event.target.value)} />
+                            <input type="text" style={{ border: 'none', outline: 'none', backgroundColor: "#EFF0F2", width: "100%" }} placeholder='Enter your Email here.' onChange={(event) => setMail(event.target.value)} />
                         </div>
                     </div>
                     <div className='flex flex-col w-full px-24'>
                         <span className='text-[16px] text-[#4D5959] font-[500] leading-[30px]'>Password</span>
                         <div className='bg-[#EFF0F2] p-3 w-full flex items-center justify-between'>
-                            <input type={!seepass ? "password" : "text"} style={{ border: 'none', outline: 'none', backgroundColor: "#EFF0F2", width: "100%" }} placeholder='Enter your Password here.' onChange={(event)=>setPassword(event.target.value)} />
+                            <input type={!seepass ? "password" : "text"} style={{ border: 'none', outline: 'none', backgroundColor: "#EFF0F2", width: "100%" }} placeholder='Enter your Password here.' onChange={(event) => setPassword(event.target.value)} />
                             <div onClick={() => setSeepass(!seepass)} className='cursor-pointer'>{seepass ? <VisibilityIcon sx={{ color: "#4D5959" }} /> : <VisibilityOffIcon sx={{ color: "#4D5959" }} />}</div>
                         </div>
                     </div>
                 </div>
                 <div className='flex justify-center flex-col gap-3 items-center'>
-                    <Button variant='contained' color='success' disableRipple sx={{ padding: "12px 45px" }}>Login</Button>
+                    <Button variant='contained' color='success' disableRipple sx={{ padding: "12px 45px" }} onClick={login}>Login</Button>
                     <div className='flex gap-1'>
                         <span className='text-[18px] font-[500] text-[#4D5959] '>Don't have an account?</span>
-                        <span className='text-[18px] text-[#007074] font-[500] cursor-pointer' onClick={()=>navigate("/signup")}>Sign up</span>
+                        <span className='text-[18px] text-[#007074] font-[500] cursor-pointer' onClick={() => navigate("/signup")}>Sign up</span>
                     </div>
                     <span className='text-[#043133] text-[22px] font-[500] '>OR</span>
                     <div className='p-3 border-2 border-[#D2D2D2] cursor-pointer flex gap-1 items-center'>
-                        <img src={google} alt="google" className='w-[30px] h-[30px]'/>
-                        <span className='text-[#043133] text-[16px] font-[500]'>Login with Google</span>
+                        <img src={google} alt="google" className='w-[30px] h-[30px]' />
+                        <span className='text-[#043133] text-[16px] font-[500]'onClick={googlelogin}>Login with Google</span>
                     </div>
                     <div className='p-3 border-2 border-[#D2D2D2] cursor-pointer flex gap-1 items-center'>
-                        <img src={linkedin} alt="google" className='w-[30px] h-[30px]'/>
+                        <img src={linkedin} alt="google" className='w-[30px] h-[30px]' />
                         <span className='text-[#043133] text-[16px] font-[500]'>Login with linkedin</span>
                     </div>
                 </div>
+                {invalidemail &&
+                    <Alert severity='error' sx={{ position: 'absolute', top: '6rem', right: '0px' }}>User not found</Alert>
+                }
+                {invalidcredentials &&
+                    <Alert severity='error' sx={{ position: 'absolute', top: '6rem', right: '0px' }}>Invalid Credentials</Alert>
+                }
             </div>
         </div>
-  )
+    )
 }
 
 export default Signin
