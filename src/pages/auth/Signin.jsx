@@ -9,6 +9,8 @@ import { useNavigate } from 'react-router-dom';
 
 const Signin = () => {
     const [seepass, setSeepass] = useState(false);
+    const [mail,setMail] = useState('');
+    const [password,setPassword] = useState('');
     const navigate = useNavigate(false);
   return (
     <div className='w-full flex'>
@@ -22,13 +24,13 @@ const Signin = () => {
                     <div className='flex flex-col w-full px-24'>
                         <span className='text-[16px] text-[#4D5959] font-[500] leading-[30px]'>Email</span>
                         <div className='bg-[#EFF0F2] p-3 w-full flex items-center'>
-                            <input type="text" style={{ border: 'none', outline: 'none', backgroundColor: "#EFF0F2", width: "100%" }} placeholder='Enter your Email here.' />
+                            <input type="text" style={{ border: 'none', outline: 'none', backgroundColor: "#EFF0F2", width: "100%" }} placeholder='Enter your Email here.' onChange={(event)=>setMail(event.target.value)} />
                         </div>
                     </div>
                     <div className='flex flex-col w-full px-24'>
                         <span className='text-[16px] text-[#4D5959] font-[500] leading-[30px]'>Password</span>
                         <div className='bg-[#EFF0F2] p-3 w-full flex items-center justify-between'>
-                            <input type={!seepass ? "password" : "text"} style={{ border: 'none', outline: 'none', backgroundColor: "#EFF0F2", width: "100%" }} placeholder='Enter your Password here.' />
+                            <input type={!seepass ? "password" : "text"} style={{ border: 'none', outline: 'none', backgroundColor: "#EFF0F2", width: "100%" }} placeholder='Enter your Password here.' onChange={(event)=>setPassword(event.target.value)} />
                             <div onClick={() => setSeepass(!seepass)} className='cursor-pointer'>{seepass ? <VisibilityIcon sx={{ color: "#4D5959" }} /> : <VisibilityOffIcon sx={{ color: "#4D5959" }} />}</div>
                         </div>
                     </div>
