@@ -4,9 +4,21 @@ import search from "../assests/search.png"
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Navbar = () => {
   const navigate = useNavigate();
+
+  const logout = async () => {
+    try{
+      const {data} = await axios.get("http://localhost:5000/api/auth/logout")
+      if(data.status === "success"){
+        navigate('/signin');
+      }
+    }catch(err){
+      console.log(err)
+    }
+  }
   return (
     <div className='flex items-center px-3 justify-between gap-5 shadow-lg'>
       <div className='h-[100px] flex items-center'>
@@ -20,9 +32,9 @@ const Navbar = () => {
         <div className='cursor-pointer' onClick={()=>navigate("/cart/123")}>
           <ShoppingCartIcon sx={{width:'30px',height:'30px'}}/>
         </div>
-        <div className='border-2 border-[#007074] rounded-md p-2 flex gap-2 items-center '>
+        <div className='border-2 border-[#007074] rounded-md p-2 flex gap-2 items-center cursor-pointer' onClick={logout}>
           <LogoutIcon sx={{width:"20px" , height:"20px"}}/>
-          <span className='text-[#007074] font-[500] text-[18px]' onClick={()=>navigate("/signin")}>Log Out</span>
+          <span className='text-[#007074] font-[500] text-[18px]' >Log Out</span>
         </div>
 
 

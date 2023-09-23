@@ -25,7 +25,6 @@ const Checkmail = () => {
     const verifyOtp = async () => {
         try {
             const { data } = await axios.post("http://localhost:5000/api/auth/verifyOtp", { otp },{withCredentials:true})
-            // console.log(data)
             if(data.status === "success"){
                 navigate("/home")
             }
@@ -51,7 +50,6 @@ const Checkmail = () => {
     const getUser = async () => {
         const { data } = await axios.get("http://localhost:5000/api/auth/check-auth" , {withCredentials:true});
         setuserData(data.user);
-        console.log(data)
     }
     useEffect(() => {
         if (initial) {

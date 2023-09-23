@@ -19,7 +19,6 @@ const Signin = () => {
     const login = async () => {
         try {
             const { data } = await axios.post("http://localhost:5000/api/auth/login", { email: mail, password },{withCredentials:true})
-            console.log(data)
             if(data.status === "success"){
                 navigate("/home");
             }
