@@ -1,52 +1,67 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from '../../assests/logo.png'
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import google from '../../assests/google.png'
 import linkedin from '../../assests/linkedin.png'
 import { Alert, Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
 const Signin = () => {
     const [seepass, setSeepass] = useState(false);
     const [mail, setMail] = useState('');
     const [password, setPassword] = useState('');
-    const [invalidemail,setInvalidemail] = useState(false);
-    const [invalidcredentials,setInvalidcredentials] = useState(false);
+    const [invalidemail, setInvalidemail] = useState(false);
+    const [invalidcredentials, setInvalidcredentials] = useState(false);
+    const [googleAlert, setGoogleAlert] = useState(false);
+    const [initial, setInitial] = useState(true);
     const navigate = useNavigate(false);
 
     const login = async () => {
         try {
-            const { data } = await axios.post("http://localhost:5000/api/auth/login", { email: mail, password },{withCredentials:true})
+            const { data } = await axios.post("http://localhost:5000/api/auth/login", { email: mail, password }, { withCredentials: true })
             console.log(data)
-            if(data.status === "success"){
+            if (data.status === "success") {
                 navigate("/home");
             }
-        }catch(err){
-            if(err.response.data.msg === "User not found"){
+        } catch (err) {
+            if (err.response.data.msg === "User not found") {
                 setInvalidemail(true);
-                setTimeout(()=>{
+                setTimeout(() => {
                     setInvalidemail(false);
-                },5000)
+                }, 5000)
             }
-            if(err.response.data.msg === "Invalid credentials"){
+            if (err.response.data.msg === "Invalid credentials") {
                 setInvalidcredentials(true);
-                setTimeout(()=>{
+                setTimeout(() => {
                     setInvalidcredentials(false);
-                },5000)
+                }, 5000)
             }
         }
     }
 
-    const googlelogin = async ()=>{
-        try{
-            const {data} = await axios.get("http://localhost:5000/api/auth/google");
-            console.log(data);
-        }catch(err){
+    const googlelogin = async () => {
+        try {
+            window.open("http://localhost:5000/api/auth/google", "_self")
+        } catch (err) {
             console.log(err)
         }
     }
+    const location = useLocation()
+    useEffect(() => {
+        if (initial) {
+            const urlParams = new URLSearchParams(location.search);
+            const error = urlParams.get('error');
+            if (error) {
+                setGoogleAlert(true)
+                setTimeout(() => {
+                    setGoogleAlert(false)
+                }, 5000)
+            }
+            setInitial(false)
+        }
+    }, [initial,location])
     return (
         <div className='w-full flex'>
             <div className="bg-[url('/src/assests/image.png')] bg-no-repeat bg-cover h-screen w-[40%]"></div>
@@ -71,15 +86,15 @@ const Signin = () => {
                     </div>
                 </div>
                 <div className='flex justify-center flex-col gap-3 items-center'>
-                    <Button variant='contained' color='success' disableRipple sx={{ padding: "12px 45px" }} onClick={login}>Login</Button>
+                    <Button type='button' variant='contained' color='success' disableRipple sx={{ padding: "12px 45px" }} onClick={login}>Login</Button>
                     <div className='flex gap-1'>
                         <span className='text-[18px] font-[500] text-[#4D5959] '>Don't have an account?</span>
                         <span className='text-[18px] text-[#007074] font-[500] cursor-pointer' onClick={() => navigate("/signup")}>Sign up</span>
                     </div>
                     <span className='text-[#043133] text-[22px] font-[500] '>OR</span>
-                    <div className='p-3 border-2 border-[#D2D2D2] cursor-pointer flex gap-1 items-center'>
+                    <div className='p-3 border-2 border-[#D2D2D2] cursor-pointer flex gap-1 items-center' onClick={googlelogin}>
                         <img src={google} alt="google" className='w-[30px] h-[30px]' />
-                        <span className='text-[#043133] text-[16px] font-[500]'onClick={googlelogin}>Login with Google</span>
+                        <span className='text-[#043133] text-[16px] font-[500]'>Login with Google</span>
                     </div>
                     <div className='p-3 border-2 border-[#D2D2D2] cursor-pointer flex gap-1 items-center'>
                         <img src={linkedin} alt="google" className='w-[30px] h-[30px]' />
@@ -91,6 +106,9 @@ const Signin = () => {
                 }
                 {invalidcredentials &&
                     <Alert severity='error' sx={{ position: 'absolute', top: '6rem', right: '0px' }}>Invalid Credentials</Alert>
+                }
+                {googleAlert &&
+                    <Alert severity='error' sx={{ position: 'absolute', top: '6rem', right: '0px' }}>Please signup first</Alert>
                 }
             </div>
         </div>
