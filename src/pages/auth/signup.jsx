@@ -48,7 +48,7 @@ const Signup = () => {
 
     return (
         <div className='w-full flex'>
-            <div className="bg-[url('/src/assests/image.png')] bg-no-repeat bg-cover h-screen w-[40%]"></div>
+            <div className="bg-[url('/src/assests/image.png')] bg-no-repeat bg-cover h-screen w-[40%] sticky top-0 left-0"></div>
             <div className='w-[60%] flex flex-col p-3 px-7 gap-10'>
                 <div className='flex items-center justify-center gap-1'>
                     <span className='text-[48px] font-[600] text-[#043133]'>Welcome to</span>

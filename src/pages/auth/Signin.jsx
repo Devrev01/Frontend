@@ -20,8 +20,9 @@ const Signin = () => {
 
     const login = async () => {
         try {
-            const { data } = await axios.post("http://localhost:5000/api/auth/login", { email: mail, password },{withCredentials:true})
-            if(data.status === "success"){
+            const { data } = await axios.post("http://localhost:5000/api/auth/login", { email: mail, password }, { withCredentials: true })
+            if (data.status === "success") {
+                localStorage.setItem("isSignedIn", true);
                 navigate("/home");
             }
         } catch (err) {
@@ -50,20 +51,26 @@ const Signin = () => {
     const location = useLocation()
     useEffect(() => {
         if (initial) {
-            const urlParams = new URLSearchParams(location.search);
-            const error = urlParams.get('error');
-            if (error) {
-                setGoogleAlert(true)
-                setTimeout(() => {
-                    setGoogleAlert(false)
-                }, 5000)
+            const isSignedIn = localStorage.getItem("isSignedIn");
+            if (isSignedIn) {
+                navigate("/home");
+            }
+            else {
+                const urlParams = new URLSearchParams(location.search);
+                const error = urlParams.get('error');
+                if (error) {
+                    setGoogleAlert(true)
+                    setTimeout(() => {
+                        setGoogleAlert(false)
+                    }, 5000)
+                }
             }
             setInitial(false)
         }
-    }, [initial,location])
+    }, [initial, location, navigate])
     return (
         <div className='w-full flex'>
-            <div className="bg-[url('/src/assests/image.png')] bg-no-repeat bg-cover h-screen w-[40%]"></div>
+            <div className="bg-[url('/src/assests/image.png')] bg-no-repeat bg-cover h-screen w-[40%] sticky top-0 left-0"></div>
             <div className='w-[60%] flex flex-col p-3 px-7 gap-10'>
                 <div className='flex items-center justify-center gap-1'>
                     <span className='text-[48px] font-[600] text-[#043133]'>Welcome to</span>

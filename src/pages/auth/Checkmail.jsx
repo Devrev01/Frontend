@@ -26,6 +26,7 @@ const Checkmail = () => {
         try {
             const { data } = await axios.post("http://localhost:5000/api/auth/verifyOtp", { otp },{withCredentials:true})
             if(data.status === "success"){
+                localStorage.setItem("isSignedIn",true);
                 navigate("/home")
             }
         }catch(err){
