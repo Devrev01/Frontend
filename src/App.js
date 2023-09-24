@@ -3,7 +3,6 @@ import { Routes, Route } from 'react-router-dom';
 import Landing from './pages/Landing';
 import Signup from './pages/auth/signup'
 import Signin from './pages/auth/Signin';
-import Home from './pages/Home';
 import Cart from './pages/Cart';
 import Checkmail from './pages/auth/Checkmail';
 import React from 'react';

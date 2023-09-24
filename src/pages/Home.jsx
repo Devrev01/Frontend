@@ -10,7 +10,7 @@ import bg from '../assests/bg.jpeg';
 import bg1 from '../assests/bg2.jpg';
 import loader from '../assests/loader.svg'
 import search from "../assests/search.png"
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Home = () => {
@@ -144,7 +144,7 @@ const Home = () => {
                   </div>
                 </CardContent>
                 <CardActions className='flex justify-between items-baseline'>
-                  {userData.booksId.indexOf(value.id) == -1 && <Button variant='outlined' type='button' disabled={value.saleInfo?.saleability === "NOT_FOR_SALE"} sx={{ textTransform: "capitalize", fontWeight: "600" }} onClick={() => { addcart(i) }}>Add to Cart</Button>}
+                  {userData.booksId.indexOf(value.id) === -1 && <Button variant='outlined' type='button' disabled={value.saleInfo?.saleability === "NOT_FOR_SALE"} sx={{ textTransform: "capitalize", fontWeight: "600" }} onClick={() => { addcart(i) }}>Add to Cart</Button>}
                   {userData.booksId.indexOf(value.id) > -1 && <Button variant='outlined' type='button' disabled={value.saleInfo?.saleability === "NOT_FOR_SALE"} sx={{ textTransform: "capitalize", fontWeight: "600" }} onClick={() => { navigate('/cart') }}>Go to Cart</Button>}
                   <div className='bg-[#83FFC9] px-2 py-1 rounded-md flex items-center'>
                     <span className='text-[12px] font-[700] text-[#00693B]'>{value.volumeInfo?.categories?.[0] || "Knowledge"}</span>
