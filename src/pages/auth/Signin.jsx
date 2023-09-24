@@ -58,11 +58,16 @@ const Signin = () => {
             else {
                 const urlParams = new URLSearchParams(location.search);
                 const error = urlParams.get('error');
+                const success = urlParams.get('success');
                 if (error) {
                     setGoogleAlert(true)
                     setTimeout(() => {
                         setGoogleAlert(false)
                     }, 5000)
+                }
+                else if(success){
+                    localStorage.setItem("isSignedIn", true);
+                    navigate("/home")
                 }
             }
             setInitial(false)
@@ -101,10 +106,6 @@ const Signin = () => {
                     <div className='p-3 border-2 border-[#D2D2D2] cursor-pointer flex gap-1 items-center' onClick={googlelogin}>
                         <img src={google} alt="google" className='w-[30px] h-[30px]' />
                         <span className='text-[#043133] text-[16px] font-[500]'>Login with Google</span>
-                    </div>
-                    <div className='p-3 border-2 border-[#D2D2D2] cursor-pointer flex gap-1 items-center'>
-                        <img src={linkedin} alt="google" className='w-[30px] h-[30px]' />
-                        <span className='text-[#043133] text-[16px] font-[500]'>Login with linkedin</span>
                     </div>
                 </div>
                 {invalidemail &&
