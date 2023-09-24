@@ -1,45 +1,64 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import bg from '../assests/bg.jpeg';
-import { IconButton, Paper } from '@mui/material';
-import RemoveIcon from '@mui/icons-material/Remove';
-import AddIcon from '@mui/icons-material/Add';
+import { Button, Paper } from '@mui/material';
+import axios from 'axios';
 
 
 const Cart = () => {
-    const data = [
-        { id: 1, img: bg, title: "Harry Potter", author: "J.K Rowling", price: '120' },
-        { id: 2, img: bg, title: "Harry Potter", author: "J.K Rowling", price: '120' },
-        { id: 3, img: bg, title: "Harry Potter", author: "J.K Rowling", price: '120' },
-        { id: 4, img: bg, title: "Harry Potter", author: "J.K Rowling", price: '120' },
-        { id: 5, img: bg, title: "Harry Potter", author: "J.K Rowling", price: '120' },
-        { id: 6, img: bg, title: "Harry Potter", author: "J.K Rowling", price: '120' },
-        { id: 7, img: bg, title: "Harry Potter", author: "J.K Rowling", price: '120' },
-    ]
+    const [cart, setCart] = useState([])
+    const [initial, setInitial] = useState(true)
 
-    const [addsubjects, setAddsubjects] = useState(0);
+    const getcart = async () => {
+        try {
+            const { data } = await axios.get('http://localhost:5000/api/cart', { withCredentials: true })
+            console.log(data)
+            setCart(data.cart)
+
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    const removefromcart = async (id, i) => {
+        try {
+            const { data } = await axios.delete(`http://localhost:5000/api/cart/${id}`, { withCredentials: true })
+            console.log(data)
+            if (data.status === "success") {
+                const newcart = [...cart]
+                newcart.splice(i, 1)
+                setCart(newcart)
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    useEffect(() => {
+        if (initial) {
+            getcart();
+            setInitial(false)
+        }
+    }, [initial])
+
     return (
         <div className='flex flex-col'>
             <Navbar />
-            <div className=' px-7 flex flex-col gap-3 py-5'>
-                {data.map((values, i) => (
-                    <Paper elevation={2} className='h-[150px] flex items-center px-7 gap-3'>
-                        <img src={values.img} alt="alt" className='w-[150px] h-[100px]' />
-                        <div className='flex flex-col gap-1'>
-                            <span className='text-[18px] font-[600] text-[#18191F]'>{values.title}</span>
-                            <span className='text-[14px] font-[600] text-[#18191F]'>{values.author}</span>
-                            <span className='text-[14px] font-[600] text-[#18191F]'>₹{values.price}</span>
-                            <div className='flex items-center gap-3'>
-                                <div className='border-2 rounded-full' onClick={() => setAddsubjects(addsubjects - 1)}>
-                                    <IconButton sx={{width:"35px",height:"35px",display:'flex',justifyContent:"center"}}>
-                                        <RemoveIcon />
-                                    </IconButton>
-                                </div>
-                                <span className='text-[16px] font-[600] text-[#18191F]'>{addsubjects}</span>
-                                <div className='border-2 p-1 rounded-full cursor-pointer' onClick={() => setAddsubjects(addsubjects + 1)}>
-                                    <AddIcon />
-                                </div>
-                            </div>
+            {cart.length === 0 &&
+                <span className='text-[28px] font-[600] text-[#043133] flex flex-wrap justify-center'>Your Cart is empty !! </span>
+            }
+            <div className=' px-7 flex flex-col gap-3 py-5 w-full'>
+                {cart.map((values, i) => (
+                    <Paper elevation={2} className='h-[150px] flex items-center justify-center px-7 gap-3 w-full'>
+                        <img src={values.cover} alt="alt" className='w-[150px] h-[100px]' />
+                        <div className='flex flex-col gap-1 w-full justify-center'>
+                            <span className='text-[18px] font-[600] text-[#18191F]'>Title: {values.title}</span>
+                            <span className='text-[14px] font-[600] text-[#18191F]'>Author:{values.author}</span>
+                            <span className='text-[14px] font-[600] text-[#18191F]'>Publisher:{values.author}</span>
+                            <span className='text-[14px] font-[600] text-[#18191F]'>Price: ₹{values.price}</span>
+                        </div>
+                        <div className='flex justify-end w-[200px] h-[50px] '>
+                            <Button variant='contained' sx={{ padding: "5px 10px", textTransform: 'capitalize' }} onClick={() => { removefromcart(values._id, i) }}>Remove from cart</Button>
                         </div>
                     </Paper>
                 ))}
