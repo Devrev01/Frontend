@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
-import bg from '../assests/bg.jpeg';
 import { Button, Paper } from '@mui/material';
 import axios from 'axios';
 
@@ -20,9 +19,9 @@ const Cart = () => {
         }
     }
 
-    const removefromcart = async (id, i) => {
+    const removefromcart = async (id, i,ID) => {
         try {
-            const { data } = await axios.delete(`http://localhost:5000/api/cart/${id}`, { withCredentials: true })
+            const { data } = await axios.delete(`http://localhost:5000/api/cart/${id}/${ID}`, { withCredentials: true })
             console.log(data)
             if (data.status === "success") {
                 const newcart = [...cart]
@@ -58,7 +57,7 @@ const Cart = () => {
                             <span className='text-[14px] font-[600] text-[#18191F]'>Price: ₹{values.price}</span>
                         </div>
                         <div className='flex justify-end w-[200px] h-[50px] '>
-                            <Button variant='contained' sx={{ padding: "5px 10px", textTransform: 'capitalize' }} onClick={() => { removefromcart(values._id, i) }}>Remove from cart</Button>
+                            <Button variant='contained' sx={{ padding: "5px 10px", textTransform: 'capitalize' }} onClick={() => { removefromcart(values._id, i,values[i].id) }}>Remove from cart</Button>
                         </div>
                     </Paper>
                 ))}
