@@ -16,7 +16,7 @@ const Checkmail = () => {
 
     const verifyEmail = async ()=>{
         try{
-           await axios.get("http://localhost:5000/api/auth/verifyEmail",{withCredentials:true});
+           await axios.get("https://bookmanager-7yd6.onrender.com/api/auth/verifyEmail",{withCredentials:true});
         }catch(err){
             console.log(err)
         }
@@ -24,7 +24,7 @@ const Checkmail = () => {
 
     const verifyOtp = async () => {
         try {
-            const { data } = await axios.post("http://localhost:5000/api/auth/verifyOtp", { otp },{withCredentials:true})
+            const { data } = await axios.post("https://bookmanager-7yd6.onrender.com/api/auth/verifyOtp", { otp },{withCredentials:true})
             if(data.status === "success"){
                 localStorage.setItem("isSignedIn",true);
                 navigate("/home")
@@ -47,10 +47,13 @@ const Checkmail = () => {
         }
     }
 
-
     const getUser = async () => {
-        const { data } = await axios.get("http://localhost:5000/api/auth/check-auth" , {withCredentials:true});
-        setuserData(data.user);
+        try{
+            const { data } = await axios.get("https://bookmanager-7yd6.onrender.com/api/auth/check-auth" , {withCredentials:true});
+            setuserData(data.user);
+        }catch(err){
+            console.log(err)
+        }
     }
     useEffect(() => {
         if (initial) {

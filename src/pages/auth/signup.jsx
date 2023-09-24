@@ -23,7 +23,7 @@ const Signup = () => {
         const isCorrectpass = conpassword === password
         try {
             if (isCorrectpass) {
-                const { data } = await axios.post('http://localhost:5000/api/auth/register', userdata,{withCredentials:true});
+                const { data } = await axios.post('https://bookmanager-7yd6.onrender.com/api/auth/register', userdata,{withCredentials:true});
                 console.log(data)
                 if (data.status === "success") {
                     navigate('/check');

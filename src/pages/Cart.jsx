@@ -11,7 +11,7 @@ const Cart = () => {
     const navigate = useNavigate()
     const getcart = async () => {
         try {
-            const { data } = await axios.get('http://localhost:5000/api/cart', { withCredentials: true })
+            const { data } = await axios.get('https://bookmanager-7yd6.onrender.com/api/cart', { withCredentials: true })
             console.log(data)
             setCart(data.cart)
 
@@ -22,7 +22,7 @@ const Cart = () => {
 
     const removefromcart = async (id, i,ID) => {
         try {
-            const { data } = await axios.delete(`http://localhost:5000/api/cart/${id}/${ID}`, { withCredentials: true })
+            const { data } = await axios.delete(`https://bookmanager-7yd6.onrender.com/api/cart/${id}/${ID}`, { withCredentials: true })
             console.log(data)
             if (data.status === "success") {
                 const newcart = [...cart]

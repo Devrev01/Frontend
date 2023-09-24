@@ -11,7 +11,7 @@ const Navbar = ({ userData }) => {
 
   const logout = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5000/api/auth/logout",{withCredentials:true})
+      const { data } = await axios.get("https://bookmanager-7yd6.onrender.com/api/auth/logout",{withCredentials:true})
       if (data.status === "success") {
         localStorage.removeItem("isSignedIn");
         navigate('/signin');
