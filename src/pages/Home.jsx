@@ -60,24 +60,30 @@ const Home = () => {
       console.log(err)
     }
   }
-
+  const navigate = useNavigate()
+  
   useEffect(() => {
     if (initial) {
       setInitial(false)
-      getUser();
+      const isSignedIn = localStorage.getItem("isSignedIn");
+      if (!isSignedIn) {
+        navigate("/signin");
+      }
+      else{
+        getUser();
+      }
     }
     if (!wasLastList && prevpage !== currpage && !initial) {
       getbooks();
     }
-  }, [currpage, wasLastList, prevpage, searchres])
+  }, [currpage, wasLastList, prevpage, searchres, initial, navigate])
 
-  const navigate = useNavigate()
 
   const addcart = async (i) => {
     const postdata = { book_id: searchres[i].id, title: searchres[i].volumeInfo?.title, author: searchres[i].volumeInfo?.authors?.[0], price: searchres[i].saleInfo?.listPrice?.amount, cover: searchres[i].volumeInfo?.imageLinks?.thumbnail || searchres[i].volumeInfo?.imageLinks?.smallThumbnail || bg, category: searchres[i].volumeInfo?.categories?.[0] || "Knowledge" }
     const { data } = await axios.post("http://localhost:5000/api/cart", postdata, { withCredentials: true });
     userData.booksId.push(searchres[i].id)
-    setuserData(userData)
+    setuserData({...userData})
     console.log(data);
   }
 

@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import { Button, Paper } from '@mui/material';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
 const Cart = () => {
     const [cart, setCart] = useState([])
     const [initial, setInitial] = useState(true)
-
+    const navigate = useNavigate()
     const getcart = async () => {
         try {
             const { data } = await axios.get('http://localhost:5000/api/cart', { withCredentials: true })
@@ -35,10 +36,15 @@ const Cart = () => {
 
     useEffect(() => {
         if (initial) {
-            getcart();
+            const isSignedIn = localStorage.getItem("isSignedIn");
+            if (!isSignedIn) {
+                navigate("/signin");
+            }else{
+                getcart();
+            }
             setInitial(false)
         }
-    }, [initial])
+    }, [initial, navigate])
 
     return (
         <div className='flex flex-col'>
@@ -57,7 +63,7 @@ const Cart = () => {
                             <span className='text-[14px] font-[600] text-[#18191F]'>Price: ₹{values.price}</span>
                         </div>
                         <div className='flex justify-end w-[200px] h-[50px] '>
-                            <Button variant='contained' sx={{ padding: "5px 10px", textTransform: 'capitalize' }} onClick={() => { removefromcart(values._id, i,values.bookId) }}>Remove from cart</Button>
+                            <Button variant='contained' sx={{ padding: "5px 10px", textTransform: 'capitalize' }} onClick={() => { removefromcart(values?._id, i,values.bookId) }}>Remove from cart</Button>
                         </div>
                     </Paper>
                 ))}

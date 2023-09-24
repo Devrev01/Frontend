@@ -11,8 +11,9 @@ const Navbar = ({ userData }) => {
 
   const logout = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5000/api/auth/logout")
+      const { data } = await axios.get("http://localhost:5000/api/auth/logout",{withCredentials:true})
       if (data.status === "success") {
+        localStorage.removeItem("isSignedIn");
         navigate('/signin');
       }
     } catch (err) {
