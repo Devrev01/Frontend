@@ -24,7 +24,7 @@ const Signup = () => {
         try {
             if (isCorrectpass) {
                 const { data } = await axios.post('https://bookmanager-7yd6.onrender.com/api/auth/register', userdata,{withCredentials:true});
-                console.log(data)
+
                 if (data.status === "success") {
                     navigate('/check');
                 }  

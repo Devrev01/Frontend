@@ -31,14 +31,12 @@ const Checkmail = () => {
             }
         }catch(err){
             if(err.response.data.msg === "Invalid OTP"){
-                console.log('invvalid')
                 setInvalidalert(true);
                 setTimeout(()=>{
                     setInvalidalert(false);
                 },5000)
             }
             if(err.response.data.msg === "Timeout"){
-                console.log('time')
                 setTimealert(true);
                 setTimeout(()=>{
                     setTimealert(false)

@@ -54,7 +54,6 @@ const Home = () => {
   const getUser = async () => {
     try {
       const { data } = await axios.get("https://bookmanager-7yd6.onrender.com/api/auth/check-auth", { withCredentials: true });
-      console.log(data)
       setuserData(data.user);
     } catch (err) {
       console.log(err)
@@ -84,10 +83,9 @@ const Home = () => {
 
   const addcart = async (i) => {
     const postdata = { book_id: searchres[i].id, title: searchres[i].volumeInfo?.title, author: searchres[i].volumeInfo?.authors?.[0], price: searchres[i].saleInfo?.listPrice?.amount, cover: searchres[i].volumeInfo?.imageLinks?.thumbnail || searchres[i].volumeInfo?.imageLinks?.smallThumbnail || bg, category: searchres[i].volumeInfo?.categories?.[0] || "Knowledge" }
-    const { data } = await axios.post("https://bookmanager-7yd6.onrender.com/api/cart", postdata, { withCredentials: true });
+    await axios.post("https://bookmanager-7yd6.onrender.com/api/cart", postdata, { withCredentials: true });
     userData.booksId.push(searchres[i].id)
     setuserData({ ...userData })
-    console.log(data);
   }
 
   return (
