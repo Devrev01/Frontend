@@ -57,16 +57,27 @@ const Signin = () => {
             else {
                 const urlParams = new URLSearchParams(location.search);
                 const error = urlParams.get('error');
-                const success = urlParams.get('success');
+                // const success = urlParams.get('success');
+                const email = urlParams.get('email');
                 if (error) {
                     setGoogleAlert(true)
                     setTimeout(() => {
                         setGoogleAlert(false)
                     }, 5000)
                 }
-                else if(success){
-                    localStorage.setItem("isSignedIn", true);
-                    navigate("/home")
+                // else if(success){
+                //     localStorage.setItem("isSignedIn", true);
+                //     navigate("/home")
+                // }
+                else if(email){
+                    const setSession = async()=>{
+                        try{
+                            await axios.get(`https://bookmanager-7yd6.onrender.com/api/auth/setSession/${email}`,{withCredentials:true})
+                        }catch(err){
+                            console.log(err)
+                        }
+                    }
+                    setSession();
                 }
             }
             setInitial(false)
