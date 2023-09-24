@@ -42,7 +42,7 @@ const Signin = () => {
 
     const googlelogin = async () => {
         try {
-            await axios.get("https://bookmanager-7yd6.onrender.com/api/auth/google", { withCredentials: true })
+            window.location.href = "https://bookmanager-7yd6.onrender.com/api/auth/google";
         } catch (err) {
             console.log(err)
         }
