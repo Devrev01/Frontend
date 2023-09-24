@@ -72,7 +72,8 @@ const Signin = () => {
                 else if(email){
                     const setSession = async()=>{
                         try{
-                            await axios.get(`https://bookmanager-7yd6.onrender.com/api/auth/setSession/${email}`,{withCredentials:true})
+                            const {data} =await axios.get(`https://bookmanager-7yd6.onrender.com/api/auth/setSession/${email}`,{withCredentials:true})
+                            console.log(data)
                         }catch(err){
                             console.log(err)
                         }
