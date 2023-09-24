@@ -57,7 +57,7 @@ const Cart = () => {
                             <span className='text-[14px] font-[600] text-[#18191F]'>Price: ₹{values.price}</span>
                         </div>
                         <div className='flex justify-end w-[200px] h-[50px] '>
-                            <Button variant='contained' sx={{ padding: "5px 10px", textTransform: 'capitalize' }} onClick={() => { removefromcart(values._id, i,values[i].id) }}>Remove from cart</Button>
+                            <Button variant='contained' sx={{ padding: "5px 10px", textTransform: 'capitalize' }} onClick={() => { removefromcart(values._id, i,values.bookId) }}>Remove from cart</Button>
                         </div>
                     </Paper>
                 ))}

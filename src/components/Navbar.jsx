@@ -27,7 +27,7 @@ const Navbar = ({ userData }) => {
       <div className='flex gap-3 items-center'>
         <div className='cursor-pointer relative' onClick={() => navigate("/cart")}>
           <ShoppingCartIcon sx={{ width: '30px', height: '30px' }} />
-          {userData?.cart?.length > 0 &&
+          {userData?.booksId?.length > 0 &&
             <div className='w-[10px] h-[10px] rounded-full top-0 right-0 bg-red-300 absolute'></div>
           }
         </div>
