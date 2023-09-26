@@ -6,6 +6,7 @@ import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import axios from 'axios';
+import loaderr from '../../assests/Spinner.gif'
 
 const Signup = () => {
     const [seepass, setSeepass] = useState(false);
@@ -16,6 +17,7 @@ const Signup = () => {
     const [conpassword, setConpassword] = useState('');
     const [passalert, setPassalert] = useState(false);
     const [useralert, setUseralert] = useState(false);
+    const [loader,setLoader] = useState(false);
     const navigate = useNavigate(false);
 
     const postdata = async () => {
@@ -23,11 +25,14 @@ const Signup = () => {
         const isCorrectpass = conpassword === password
         try {
             if (isCorrectpass) {
+                setLoader(true);
                 const { data } = await axios.post('https://bookmanager-7yd6.onrender.com/api/auth/register', userdata,{withCredentials:true});
 
                 if (data.status === "success") {
+                    setLoader(false);
                     navigate('/check');
-                }  
+                } 
+             
             } else {
                 setPassalert(true);
                 setTimeout(() => {
@@ -96,6 +101,13 @@ const Signup = () => {
                     <Alert severity='error' sx={{ position: 'absolute', top: '6rem', right: '0px' }}>Password and Confirm Password should match..</Alert>
                 }
             </div>
+            {loader &&
+                <div className='flex w-full h-screen bg-white/50 absolute top-0 items-center justify-center'>
+                    <div className='w-max h-max'>
+                        <img src={loaderr} alt="loader" className='w-[300px] h-[300px]' />
+                    </div>
+                </div>
+            }
         </div>
     )
 }
