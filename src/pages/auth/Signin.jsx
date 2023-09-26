@@ -3,7 +3,6 @@ import logo from '../../assests/logo.png'
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import google from '../../assests/google.png'
-import linkedin from '../../assests/linkedin.png'
 import { Alert, Button } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
@@ -20,7 +19,7 @@ const Signin = () => {
 
     const login = async () => {
         try {
-            const { data } = await axios.post("http://localhost:5000/api/auth/login", { email: mail, password }, { withCredentials: true })
+            const { data } = await axios.post("https://bookmanager-7yd6.onrender.com/api/auth/login", { email: mail, password }, { withCredentials: true })
             if (data.status === "success") {
                 localStorage.setItem("isSignedIn", true);
                 navigate("/home");
@@ -43,7 +42,7 @@ const Signin = () => {
 
     const googlelogin = async () => {
         try {
-            window.open("http://localhost:5000/api/auth/google", "_self")
+            window.location.href = "https://bookmanager-7yd6.onrender.com/api/auth/google";
         } catch (err) {
             console.log(err)
         }
@@ -57,17 +56,25 @@ const Signin = () => {
             }
             else {
                 const urlParams = new URLSearchParams(location.search);
-                const error = urlParams.get('error');
-                const success = urlParams.get('success');
-                if (error) {
-                    setGoogleAlert(true)
-                    setTimeout(() => {
-                        setGoogleAlert(false)
-                    }, 5000)
-                }
-                else if(success){
-                    localStorage.setItem("isSignedIn", true);
-                    navigate("/home")
+                const email = urlParams.get('email');
+                if(email){
+                    const setSession = async()=>{
+                        try{
+                            const {data} =await axios.get(`https://bookmanager-7yd6.onrender.com/api/auth/setSession/${email}`,{withCredentials:true})
+                            if(data.status === "success"){
+                                localStorage.setItem("isSignedIn", true);
+                                navigate("/home")
+                            }
+                        }catch(err){
+                            if(err.response.data.status === "failed"){
+                                setGoogleAlert(true)
+                                setTimeout(() => {
+                                    setGoogleAlert(false)
+                                }, 5000)
+                            }
+                        }
+                    }
+                    setSession();
                 }
             }
             setInitial(false)

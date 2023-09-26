@@ -53,15 +53,14 @@ const Home = () => {
 
   const getUser = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5000/api/auth/check-auth", { withCredentials: true });
-      console.log(data)
+      const { data } = await axios.get("https://bookmanager-7yd6.onrender.com/api/auth/check-auth", { withCredentials: true });
       setuserData(data.user);
     } catch (err) {
       console.log(err)
     }
   }
   const navigate = useNavigate()
-  
+
   useEffect(() => {
     if (initial) {
       setInitial(false)
@@ -69,22 +68,24 @@ const Home = () => {
       if (!isSignedIn) {
         navigate("/signin");
       }
-      else{
+      else {
         getUser();
       }
     }
+  },[initial,navigate])
+
+  useEffect(() => {
     if (!wasLastList && prevpage !== currpage && !initial) {
       getbooks();
     }
-  }, [currpage, wasLastList, prevpage, searchres, initial, navigate])
+  })
 
 
   const addcart = async (i) => {
     const postdata = { book_id: searchres[i].id, title: searchres[i].volumeInfo?.title, author: searchres[i].volumeInfo?.authors?.[0], price: searchres[i].saleInfo?.listPrice?.amount, cover: searchres[i].volumeInfo?.imageLinks?.thumbnail || searchres[i].volumeInfo?.imageLinks?.smallThumbnail || bg, category: searchres[i].volumeInfo?.categories?.[0] || "Knowledge" }
-    const { data } = await axios.post("http://localhost:5000/api/cart", postdata, { withCredentials: true });
+    await axios.post("https://bookmanager-7yd6.onrender.com/api/cart", postdata, { withCredentials: true });
     userData.booksId.push(searchres[i].id)
-    setuserData({...userData})
-    console.log(data);
+    setuserData({ ...userData })
   }
 
   return (
